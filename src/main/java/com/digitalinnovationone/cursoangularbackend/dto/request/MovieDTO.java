@@ -1,31 +1,29 @@
-package com.digitalinnovationone.cursoangularbackend.entities;
+package com.digitalinnovationone.cursoangularbackend.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.sql.Date;
-import java.time.LocalDate;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
-@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Movie {
+public class MovieDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
 
-    @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 2, max = 50)
     private String titulo;
 
     private String urlFoto;
 
-    private LocalDate dtLancamento;
+    private String dtLancamento;
 
     private String descricao;
 
@@ -33,7 +31,7 @@ public class Movie {
 
     private String urlIMDb;
 
-    @Column(nullable = false)
+    @NotEmpty
+    @Size(min = 2, max = 50)
     private String genero;
-
 }
