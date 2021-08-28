@@ -16,18 +16,18 @@ import java.util.List;
 @RequestMapping("/api/v1/movie")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class MovieController {
-    
+
     private MovieService movieService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO createMovie(@RequestBody @Valid MovieDTO movieDTO){
+    public MessageResponseDTO createMovie(@RequestBody @Valid MovieDTO movieDTO) {
         return movieService.create(movieDTO);
     }
 
     @GetMapping
-    public List<MovieDTO> listAll(){
-        return movieService.listAll();
+    public List<MovieDTO> listAll(@RequestParam int page, @RequestParam int limit) {
+        return movieService.listAll(page, limit);
     }
 
     @GetMapping("/{id}")
@@ -43,6 +43,6 @@ public class MovieController {
 
     @PutMapping("/{id}")
     public MessageResponseDTO updateById(@PathVariable Integer id, @RequestBody @Valid MovieDTO movieDTO) throws MovieNotFoundException {
-        return movieService.updateById(id,movieDTO);
+        return movieService.updateById(id, movieDTO);
     }
 }

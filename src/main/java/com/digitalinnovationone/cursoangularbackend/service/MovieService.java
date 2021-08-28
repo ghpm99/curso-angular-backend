@@ -8,6 +8,9 @@ import com.digitalinnovationone.cursoangularbackend.exception.MovieNotFoundExcep
 import com.digitalinnovationone.cursoangularbackend.repositories.MovieRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -30,6 +33,11 @@ public class MovieService {
 
     public List<MovieDTO> listAll() {
         List<Movie> allMovie = movieRepository.findAll();
+
+        return allMovie.stream().map(movieMapper::toDTO).collect(Collectors.toList());
+    }
+    public List<MovieDTO> listAll(int page,int limit){
+        Page<Movie> allMovie = movieRepository.findAll(PageRequest.of(page,limit));
 
         return allMovie.stream().map(movieMapper::toDTO).collect(Collectors.toList());
     }
