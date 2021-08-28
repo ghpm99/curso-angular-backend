@@ -26,8 +26,9 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<MovieDTO> listAll(@RequestParam int page, @RequestParam int limit) {
-        return movieService.listAll(page, limit);
+    public List<MovieDTO> listAll(@RequestParam int page, @RequestParam int limit, @RequestParam(required = false) String text, @RequestParam(required = false) String genero) {
+
+        return movieService.listAll(page, limit,text,genero);
     }
 
     @GetMapping("/{id}")

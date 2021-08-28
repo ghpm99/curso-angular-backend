@@ -36,10 +36,19 @@ public class MovieService {
 
         return allMovie.stream().map(movieMapper::toDTO).collect(Collectors.toList());
     }
-    public List<MovieDTO> listAll(int page,int limit){
+    public List<MovieDTO> listAll(int page,int limit,String text, String genero){
         Page<Movie> allMovie = movieRepository.findAll(PageRequest.of(page,limit));
 
-        return allMovie.stream().map(movieMapper::toDTO).collect(Collectors.toList());
+        return allMovie.stream().map(movieMapper::toDTO).filter((movie) -> {
+            boolean retorno = true;
+            if(text != null){
+                retorno = retorno && movie.getTitulo().contains(text);
+            }
+            if(genero != null){
+                retorno = retorno && movie.getGenero().equals(genero);
+            }
+            return retorno;
+        }).collect(Collectors.toList());
     }
 
     public MovieDTO findById(Integer id) throws MovieNotFoundException {
