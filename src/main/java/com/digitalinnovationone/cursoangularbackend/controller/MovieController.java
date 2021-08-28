@@ -3,6 +3,7 @@ package com.digitalinnovationone.cursoangularbackend.controller;
 import com.digitalinnovationone.cursoangularbackend.dto.request.MovieDTO;
 import com.digitalinnovationone.cursoangularbackend.dto.response.MessageResponseDTO;
 import com.digitalinnovationone.cursoangularbackend.exception.MovieNotFoundException;
+import com.digitalinnovationone.cursoangularbackend.exception.OrderNotFoundException;
 import com.digitalinnovationone.cursoangularbackend.service.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class MovieController {
                                   @RequestParam(required = false) String text,
                                   @RequestParam(required = false) String genero,
                                   @RequestParam(required = false) String sort,
-                                  @RequestParam(required = false) String order) {
+                                  @RequestParam(required = false) String order) throws OrderNotFoundException {
 
         return movieService.listAll(page, limit, text, genero, sort, order);
     }

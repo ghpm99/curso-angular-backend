@@ -5,12 +5,12 @@ import com.digitalinnovationone.cursoangularbackend.dto.request.MovieDTO;
 import com.digitalinnovationone.cursoangularbackend.dto.response.MessageResponseDTO;
 import com.digitalinnovationone.cursoangularbackend.entities.Movie;
 import com.digitalinnovationone.cursoangularbackend.exception.MovieNotFoundException;
+import com.digitalinnovationone.cursoangularbackend.exception.OrderNotFoundException;
 import com.digitalinnovationone.cursoangularbackend.repositories.MovieRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +38,11 @@ public class MovieService {
         return allMovie.stream().map(movieMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<MovieDTO> listAll(int page, int limit, String text, String genero, String sort, String order) {
+    public List<MovieDTO> listAll(int page, int limit, String text, String genero, String sort, String order) throws OrderNotFoundException {
         Page<Movie> allMovie;
 
         if (sort != null && order != null) {
-            allMovie = movieRepository.findAll(PageRequest.of(page, limit, Sort.by(order, sort)));
+            allMovie = movieRepository.findAll(PageRequest.of(page, limit, Sort.by(convertOrder(order), sort)));
         } else {
             allMovie = movieRepository.findAll(PageRequest.of(page, limit));
         }
@@ -84,5 +84,14 @@ public class MovieService {
 
     private MessageResponseDTO createMessageResponse(int id, String message) {
         return MessageResponseDTO.builder().message(message + id).build();
+    }
+
+    private Sort.Direction convertOrder(String order) throws OrderNotFoundException {
+        if(order.toLowerCase().contains("asc")){
+            return Sort.Direction.ASC;
+        }else if(order.toLowerCase().contains("desc")){
+            return Sort.Direction.DESC;
+        }
+        throw new OrderNotFoundException(order);
     }
 }
